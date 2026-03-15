@@ -30,7 +30,8 @@ def get_store(request: Request) -> BaseStore:
 
 # ── Segmentation ──────────────────────────────────────────────────
 @lru_cache(maxsize=1)
-def get_segmentation_service(settings: Settings = Depends(get_settings)) -> SegmentationService:
+def get_segmentation_service() -> SegmentationService:
+    settings = get_settings()
     return SegmentationService(
         min_panels=settings.min_panels,
         max_panels=settings.max_panels,
@@ -39,7 +40,8 @@ def get_segmentation_service(settings: Settings = Depends(get_settings)) -> Segm
 
 # ── Arc Detector ──────────────────────────────────────────────────
 @lru_cache(maxsize=1)
-def get_arc_detector(settings: Settings = Depends(get_settings)) -> ArcDetectionService:
+def get_arc_detector() -> ArcDetectionService:
+    settings = get_settings()
     return ArcDetectionService(
         api_key=settings.anthropic_api_key,
         model=settings.claude_model,
@@ -48,7 +50,8 @@ def get_arc_detector(settings: Settings = Depends(get_settings)) -> ArcDetection
 
 # ── Prompt Engine ─────────────────────────────────────────────────
 @lru_cache(maxsize=1)
-def get_prompt_engine(settings: Settings = Depends(get_settings)) -> PromptEngineeringService:
+def get_prompt_engine() -> PromptEngineeringService:
+    settings = get_settings()
     return PromptEngineeringService(
         api_key=settings.anthropic_api_key,
         model=settings.claude_model,
@@ -63,7 +66,8 @@ def get_style_engine() -> StyleEngine:
 
 # ── Image Service Factory ─────────────────────────────────────────
 @lru_cache(maxsize=1)
-def get_image_factory(settings: Settings = Depends(get_settings)) -> ImageServiceFactory:
+def get_image_factory() -> ImageServiceFactory:
+    settings = get_settings()
     return ImageServiceFactory(
         openai_api_key=settings.openai_api_key,
         google_api_key=settings.google_api_key,
@@ -78,7 +82,7 @@ def get_image_factory(settings: Settings = Depends(get_settings)) -> ImageServic
 
 # ── Storyboard Builder ────────────────────────────────────────────
 @lru_cache(maxsize=1)
-def get_storyboard_builder(settings: Settings = Depends(get_settings)) -> StoryboardBuilder:
+def get_storyboard_builder() -> StoryboardBuilder:
     templates_dir = str(Path(__file__).parent / "templates")
     return StoryboardBuilder(templates_dir=templates_dir)
 

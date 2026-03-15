@@ -3,7 +3,7 @@ Stage 5 — Image Generation.
 
 Supports two backends:
   - DALL-E 3  (OpenAI)
-  - Imagen 3  (Google Gemini)
+  - Gemini-3.1-flash-image-preview  (Google Gemini)
 
 Both implement the same interface: generate(prompt) -> local_file_path.
 Selection is driven by ImageModel enum passed in GenerationConfig.
@@ -169,7 +169,7 @@ class GeminiImageService:
     def __init__(
         self,
         api_key: str,
-        model: str = "imagen-3.0-generate-002",
+        model: str = "gemini-3.1-flash-image-preview",
         storage_path: str = "./storage/images",
         static_url_prefix: str = "/static/images",
     ) -> None:
@@ -260,24 +260,33 @@ class GeminiImageService:
 
     def _generate_sync(self, prompt: str) -> bytes:
         """Synchronous Gemini API call — runs in thread executor."""
-        import google.generativeai as genai
-        from google.generativeai import types as genai_types
+        from google import genai
+        from google.genai import types
 
-        genai.configure(api_key=self._api_key)
-        model = genai.ImageGenerationModel(self._model)
+        client = genai.Client(api_key=self._api_key)
 
-        result = model.generate_images(
-            prompt=prompt,
-            number_of_images=1,
-            aspect_ratio="16:9",
-            safety_filter_level="block_only_high",
-            person_generation="allow_adult",
+        response = client.models.generate_content(
+            model=self._model,  # e.g. "gemini-3.1-flash-image-preview"
+            contents=[
+                types.Content(
+                    role="user",
+                    parts=[types.Part.from_text(text=prompt)],
+                )
+            ],
+            config=types.GenerateContentConfig(
+                response_modalities=["IMAGE"],
+                image_config=types.ImageConfig(
+                    image_size="0.5K",
+                    aspect_ratio="16:9",
+                ),
+            ),
         )
 
-        if not result.images:
-            raise ImageGenerationError("Gemini returned no images.")
+        for part in response.candidates[0].content.parts:
+            if part.inline_data:
+                return part.inline_data.data
 
-        return result.images[0]._image_bytes
+        raise ImageGenerationError("Gemini returned no images.")
 
 
 # ── Factory ───────────────────────────────────────────────────────

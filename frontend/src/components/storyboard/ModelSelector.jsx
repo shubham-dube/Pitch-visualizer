@@ -18,7 +18,7 @@ const MODELS = [
   },
   {
     id: 'gemini',
-    name: 'Imagen 3',
+    name: 'Gemini 3.1 Flash (Nano Banana)',
     provider: 'Google Gemini',
     description: 'Ultra-photorealistic output. Best for corporate and documentary styles.',
     speed: '~15s / panel',

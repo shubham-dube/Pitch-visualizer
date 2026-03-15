@@ -40,7 +40,7 @@ class Settings(BaseSettings):
     google_api_key: str = ""
 
     # ── Claude ────────────────────────────────────────────────────
-    claude_model: str = "claude-opus-4-5"
+    claude_model: str = "claude-sonnet-4-5"
 
     # ── DALL-E ────────────────────────────────────────────────────
     dalle_model: str = "dall-e-3"
@@ -48,7 +48,7 @@ class Settings(BaseSettings):
     dalle_quality: str = "hd"
 
     # ── Gemini Imagen ─────────────────────────────────────────────
-    gemini_image_model: str = "imagen-3.0-generate-002"
+    gemini_image_model: str = "gemini-3.1-flash-image-preview"
 
     # ── Generation Defaults ───────────────────────────────────────
     default_image_model: str = "dalle3"

@@ -25,7 +25,7 @@ Pitch Visualizer takes a block of narrative text — a customer success story, a
 ## Features
 
 - 🎬 **6 visual style profiles** — Cinematic, Corporate, Storybook, Minimal, Futuristic, Documentary
-- 🤖 **Dual image models** — DALL-E 3 (OpenAI) and Imagen 3 (Google Gemini), user-selectable
+- 🤖 **Dual image models** — DALL-E 3 (OpenAI) and Gemini-3.1-flash-image-preview (Google Gemini), user-selectable
 - 📖 **Narrative Arc Detection** — Claude maps story structure to visual intensity per panel
 - ⚡ **Real-time panel streaming** — panels appear one-by-one as they generate
 - ✏️ **Panel editor** — edit prompts inline, preview with Claude, regenerate individual panels
@@ -71,7 +71,7 @@ cp backend/.env.example backend/.env
 ```env
 ANTHROPIC_API_KEY=sk-ant-your-key-here
 OPENAI_API_KEY=sk-your-key-here
-GOOGLE_API_KEY=your-google-ai-key-here   # Only needed if using Imagen 3
+GOOGLE_API_KEY=your-google-ai-key-here   # Only needed if using Gemini-3.1-flash-image-preview
 ```
 
 ### 3. Launch
@@ -141,7 +141,7 @@ Frontend runs at http://localhost:3000
 |---|---|---|---|
 | `ANTHROPIC_API_KEY` | ✅ | — | Claude API key (prompt engineering + arc detection) |
 | `OPENAI_API_KEY` | ✅* | — | OpenAI key (* required if using DALL-E 3) |
-| `GOOGLE_API_KEY` | ✅* | — | Google AI key (* required if using Imagen 3) |
+| `GOOGLE_API_KEY` | ✅* | — | Google AI key (* required if using gemini-3.1-flash-image-preview) |
 | `CLAUDE_MODEL` | No | `claude-opus-4-5` | Claude model to use |
 | `DALLE_QUALITY` | No | `hd` | `standard` or `hd` (affects cost) |
 | `DEFAULT_PANELS` | No | `5` | Default panel count |

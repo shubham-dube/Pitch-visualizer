@@ -46,7 +46,7 @@ async def list_models():
         ),
         ImageModelInfo(
             id=ImageModel.GEMINI,
-            display_name="Imagen 3 (Google Gemini)",
+            display_name="Gemini 3.1 Flash (Google Gemini)",
             description="Google's latest image generation model. Photorealistic and highly detailed.",
             image_size="16:9 aspect ratio",
             speed="~10–20s per image",
