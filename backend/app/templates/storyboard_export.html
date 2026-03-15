@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ title }} — Pitch Visualizer</title>
+  <style>
+    :root {
+      --primary:   #0F172A;
+      --surface:   #1E293B;
+      --surface2:  #263348;
+      --accent:    #6366F1;
+      --accent2:   #10B981;
+      --text:      #CBD5E1;
+      --text-muted:#64748B;
+      --border:    #334155;
+      --white:     #FFFFFF;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--primary);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      padding: 48px 24px;
+      min-height: 100vh;
+    }
+    /* ── Header ── */
+    .header {
+      max-width: 1200px; margin: 0 auto 48px;
+      text-align: center;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 32px;
+    }
+    .header-logo {
+      font-size: .8rem; text-transform: uppercase; letter-spacing: .15em;
+      color: var(--accent); font-weight: 700; margin-bottom: 16px;
+    }
+    .header h1 { font-size: 2.8rem; color: var(--white); font-weight: 800; margin-bottom: 12px; line-height: 1.2; }
+    .header-meta { color: var(--text-muted); font-size: .9rem; display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+    .header-meta span { display: flex; align-items: center; gap: 6px; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
+
+    /* ── Arc Banner ── */
+    .arc-banner {
+      max-width: 1200px; margin: 0 auto 40px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 32px;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+    }
+    .arc-label { color: var(--text-muted); font-size: .85rem; text-transform: uppercase; letter-spacing: .1em; }
+    .arc-value { color: var(--accent); font-size: 1.1rem; font-weight: 700; text-transform: capitalize; }
+
+    /* ── Panel Grid ── */
+    .panels {
+      max-width: 1200px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
+      gap: 28px;
+    }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .panel:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(99,102,241,.15); }
+
+    /* ── Panel Image ── */
+    .panel-image-wrap { position: relative; aspect-ratio: 16/9; background: var(--surface2); overflow: hidden; }
+    .panel-image-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .panel-number {
+      position: absolute; top: 12px; left: 12px;
+      background: rgba(15,23,42,.75); backdrop-filter: blur(6px);
+      color: var(--white); font-size: .75rem; font-weight: 700;
+      padding: 4px 10px; border-radius: 20px; letter-spacing: .05em;
+    }
+    .intensity-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 3px;
+    }
+
+    /* ── Panel Body ── */
+    .panel-body { padding: 20px 22px; }
+    .panel-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .badge {
+      padding: 4px 10px; border-radius: 20px; font-size: .72rem;
+      text-transform: uppercase; letter-spacing: .06em; font-weight: 600;
+    }
+    .badge-role   { background: rgba(99,102,241,.15); color: var(--accent); }
+    .badge-emotion{ background: rgba(16,185,129,.12); color: var(--accent2); }
+    .badge-intensity { background: rgba(245,158,11,.12); color: #F59E0B; }
+
+    .scene-title { font-size: 1.15rem; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+    .caption { color: var(--text-muted); font-size: .875rem; line-height: 1.65; margin-bottom: 14px; }
+
+    .palette { display: flex; gap: 6px; align-items: center; margin-bottom: 12px; }
+    .palette-dot {
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.12);
+    }
+    .palette-label { color: var(--text-muted); font-size: .72rem; margin-left: 4px; }
+
+    .key-elements { display: flex; gap: 6px; flex-wrap: wrap; }
+    .key-element {
+      background: var(--surface2); color: var(--text-muted);
+      font-size: .72rem; padding: 3px 8px; border-radius: 6px; border: 1px solid var(--border);
+    }
+
+    /* ── Footer ── */
+    .footer {
+      max-width: 1200px; margin: 48px auto 0;
+      padding-top: 24px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-brand { color: var(--accent); font-weight: 700; font-size: .9rem; }
+    .footer-meta  { color: var(--text-muted); font-size: .8rem; }
+
+    @media (max-width: 600px) {
+      .panels { grid-template-columns: 1fr; }
+      .header h1 { font-size: 1.8rem; }
+    }
+    @media print {
+      body { background: #fff; color: #000; }
+      .panel { break-inside: avoid; border: 1px solid #ddd; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-logo">Pitch Visualizer</div>
+    <h1>{{ title }}</h1>
+    <div class="header-meta">
+      <span><span class="dot"></span> Style: {{ style_profile | replace('_', ' ') | title }}</span>
+      <span><span class="dot"></span> {{ storyboard.panels | length }} Panels</span>
+      <span><span class="dot"></span> {{ generated_at }}</span>
+    </div>
+  </div>
+
+  <div class="arc-banner">
+    <span class="arc-label">Narrative Arc</span>
+    <span class="arc-value">{{ storyboard.overall_arc.value | replace('_', ' ') | title }}</span>
+  </div>
+
+  <div class="panels">
+    {% for item in panels_data %}
+    {% set p = item.panel %}
+    {% set intensity_pct = (p.intensity * 100) | int %}
+    {% set intensity_color = "#EF4444" if p.intensity > 0.7 else ("#F59E0B" if p.intensity > 0.4 else "#10B981") %}
+    <div class="panel">
+      <div class="panel-image-wrap">
+        {% if item.image_b64 %}
+          <img src="data:image/png;base64,{{ item.image_b64 }}" alt="{{ p.scene_title }}" loading="lazy" />
+        {% else %}
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-muted)">
+            Image not available
+          </div>
+        {% endif %}
+        <span class="panel-number">{{ p.panel_index + 1 }} / {{ storyboard.panels | length }}</span>
+        <div class="intensity-overlay" style="background: linear-gradient(to right, {{ intensity_color }}, transparent); opacity: {{ p.intensity }};"></div>
+      </div>
+
+      <div class="panel-body">
+        <div class="panel-badges">
+          <span class="badge badge-role">{{ p.panel_role.value }}</span>
+          <span class="badge badge-emotion">{{ p.dominant_emotion.value }}</span>
+          <span class="badge badge-intensity">{{ intensity_pct }}% intensity</span>
+        </div>
+
+        <h3 class="scene-title">{{ p.scene_title }}</h3>
+        <p class="caption">{{ p.original_text }}</p>
+
+        {% if p.color_palette %}
+        <div class="palette">
+          {% for color in p.color_palette %}
+            <div class="palette-dot" style="background: {{ color }}" title="{{ color }}"></div>
+          {% endfor %}
+          <span class="palette-label">Color palette</span>
+        </div>
+        {% endif %}
+
+        {% if p.key_elements %}
+        <div class="key-elements">
+          {% for el in p.key_elements %}
+            <span class="key-element">{{ el }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="footer">
+    <span class="footer-brand">✦ Pitch Visualizer</span>
+    <span class="footer-meta">Generated {{ generated_at }} · AI-powered storyboard</span>
+  </div>
+
+</body>
+</html>
