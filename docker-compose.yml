@@ -1,0 +1,57 @@
+services:
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pitch-visualizer-api
+    ports:
+      - "8000:8000"
+    environment:
+      # ── Required ─────────────────────────────────────────────────
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      # ── App settings ──────────────────────────────────────────────
+      - ENVIRONMENT=development
+      - DEBUG=true
+      - LOG_LEVEL=INFO
+      - CORS_ORIGINS=http://localhost:3000,http://localhost:5173
+      # ── Storage (served via StaticFiles) ──────────────────────────
+      - STORAGE_PATH=/app/storage/images
+      - STATIC_URL_PREFIX=/static/images
+      # ── Generation defaults ───────────────────────────────────────
+      - DEFAULT_IMAGE_MODEL=dalle3
+      - CLAUDE_MODEL=claude-opus-4-5
+      - DALLE_QUALITY=hd
+    volumes:
+      # Persist generated images across restarts
+      - ./backend/storage:/app/storage
+      # Live reload in development
+      - ./backend/app:/app/app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: pitch-visualizer-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000
+    volumes:
+      - ./frontend/src:/app/src
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  storage:
