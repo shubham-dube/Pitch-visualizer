@@ -1,0 +1,141 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary:   #0F172A;
+    --color-surface:   #1E293B;
+    --color-surface2:  #263348;
+    --color-accent:    #6366F1;
+    --color-success:   #10B981;
+    --color-warning:   #F59E0B;
+    --color-danger:    #EF4444;
+    --color-text:      #CBD5E1;
+    --color-muted:     #64748B;
+    --color-border:    #334155;
+  }
+
+  * {
+    @apply border-border;
+    scrollbar-width: thin;
+    scrollbar-color: #334155 transparent;
+  }
+
+  *::-webkit-scrollbar         { width: 6px; height: 6px; }
+  *::-webkit-scrollbar-track   { background: transparent; }
+  *::-webkit-scrollbar-thumb   { background: #334155; border-radius: 3px; }
+  *::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+  html { @apply scroll-smooth; }
+
+  body {
+    @apply bg-primary text-slate-300 font-sans antialiased;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99,102,241,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(16,185,129,0.04) 0%, transparent 50%);
+    background-attachment: fixed;
+  }
+}
+
+@layer components {
+  /* ── Buttons ── */
+  .btn {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-xl font-medium text-sm
+           transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2
+           focus:ring-offset-primary disabled:opacity-50 disabled:cursor-not-allowed
+           active:scale-95;
+  }
+  .btn-primary {
+    @apply btn bg-accent hover:bg-accent-dark text-white focus:ring-accent shadow-lg
+           hover:shadow-accent/20;
+  }
+  .btn-secondary {
+    @apply btn bg-surface hover:bg-surface-2 text-slate-300 border border-border
+           hover:border-border-light focus:ring-accent/50;
+  }
+  .btn-ghost {
+    @apply btn hover:bg-white/5 text-muted hover:text-slate-300 focus:ring-accent/30;
+  }
+  .btn-danger {
+    @apply btn bg-danger/10 hover:bg-danger/20 text-danger border border-danger/20
+           hover:border-danger/40 focus:ring-danger/50;
+  }
+  .btn-lg  { @apply px-6 py-3 text-base rounded-2xl; }
+  .btn-sm  { @apply px-3 py-1.5 text-xs rounded-lg; }
+  .btn-icon { @apply p-2 rounded-xl; }
+
+  /* ── Cards ── */
+  .card {
+    @apply bg-surface border border-border rounded-2xl shadow-card
+           transition-all duration-200;
+  }
+  .card-hover {
+    @apply card hover:border-accent/30 hover:shadow-card-hover hover:-translate-y-0.5
+           cursor-pointer;
+  }
+
+  /* ── Inputs ── */
+  .input {
+    @apply w-full bg-primary border border-border rounded-xl px-4 py-3 text-sm
+           text-slate-200 placeholder:text-muted transition-colors duration-200
+           focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30;
+  }
+  .textarea {
+    @apply input resize-none leading-relaxed;
+  }
+  .label {
+    @apply block text-sm font-medium text-slate-300 mb-2;
+  }
+
+  /* ── Badges ── */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-2xs
+           font-semibold uppercase tracking-wider;
+  }
+  .badge-accent  { @apply badge bg-accent/15 text-accent; }
+  .badge-success { @apply badge bg-success/15 text-success; }
+  .badge-warning { @apply badge bg-warning/15 text-warning; }
+  .badge-danger  { @apply badge bg-danger/15 text-danger; }
+  .badge-muted   { @apply badge bg-white/5 text-muted; }
+
+  /* ── Skeleton ── */
+  .skeleton {
+    @apply rounded-xl bg-gradient-to-r from-surface via-surface-2 to-surface
+           bg-[length:200%_100%] animate-shimmer;
+  }
+
+  /* ── Divider ── */
+  .divider { @apply border-t border-border; }
+
+  /* ── Glass card ── */
+  .glass {
+    @apply bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl;
+  }
+
+  /* ── Section heading ── */
+  .section-title {
+    @apply text-xl font-bold text-white;
+  }
+  .section-subtitle {
+    @apply text-sm text-muted mt-1;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-accent-light via-accent to-purple-400
+           bg-clip-text text-transparent;
+  }
+  .text-gradient-green {
+    @apply bg-gradient-to-r from-success-light to-success
+           bg-clip-text text-transparent;
+  }
+  .border-gradient {
+    background: linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+                linear-gradient(135deg, #6366F1, #10B981) border-box;
+    border: 1px solid transparent;
+  }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
