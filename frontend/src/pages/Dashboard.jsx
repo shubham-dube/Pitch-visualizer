@@ -42,7 +42,7 @@ function ProjectCard({ project, onDelete }) {
       <div className="relative h-36 bg-surface-2 overflow-hidden">
         {project.thumbnail_url ? (
           <img
-            src={project.thumbnail_url.startsWith('http') ? project.thumbnail_url : `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'}${project.thumbnail_url}`}
+            src={project.thumbnail_url.startsWith('http') ? project.thumbnail_url : `${import.meta.env.VITE_API_BASE_URL || 'https://storyframe-wctpi.ondigitalocean.app'}${project.thumbnail_url}`}
             alt={project.title}
             className="w-full h-full object-cover"
           />
