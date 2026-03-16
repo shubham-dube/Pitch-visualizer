@@ -5,18 +5,6 @@ import clsx from 'clsx'
 
 const MODELS = [
   {
-    id: 'dalle3',
-    name: 'DALL-E 3',
-    provider: 'OpenAI',
-    description: 'Exceptional prompt adherence. Best for creative, dramatic styles.',
-    speed: '~20s / panel',
-    quality: 'Stunning HD',
-    badge: 'Most Creative',
-    badgeColor: 'badge-accent',
-    icon: '◆',
-    iconColor: 'text-green-400',
-  },
-  {
     id: 'gemini',
     name: 'Gemini 3.1 Flash (Nano Banana)',
     provider: 'Google Gemini',
