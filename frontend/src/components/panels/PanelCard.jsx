@@ -65,6 +65,7 @@ export default function PanelCard({
     navigate(`/projects/${projectId}/edit/${panel.panel_index}`)
   }
 
+
   return (
     <motion.div
       layout
@@ -88,7 +89,7 @@ export default function PanelCard({
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-muted">
             <ImageOff size={28} />
-            <span className="text-xs">Image unavailable</span>
+            <span className="text-xs">Image Unavailable</span>
           </div>
         )}
 

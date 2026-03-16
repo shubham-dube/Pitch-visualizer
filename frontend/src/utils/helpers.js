@@ -80,7 +80,7 @@ export const imageUrl = (path) => {
 
   if (path.startsWith('http')) return path
 
-  const base = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+  const base = import.meta.env.VITE_API_BASE_URL || 'https://storyframe-wctpi.ondigitalocean.app'
 
   return `${base}${path}`
 }
