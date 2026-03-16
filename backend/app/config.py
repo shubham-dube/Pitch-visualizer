@@ -28,7 +28,7 @@ class Settings(BaseSettings):
     app_description: str = "AI-powered storyboard generation from narrative text"
 
     # ── CORS ──────────────────────────────────────────────────────
-    cors_origins: str = "http://localhost:3000,http://localhost:5173"
+    cors_origins: str = "http://localhost:3000,http://localhost:5173,https://storyframe-ui-t4uxt.ondigitalocean.app"
 
     @property
     def cors_origins_list(self) -> List[str]:

@@ -276,7 +276,7 @@ class GeminiImageService:
             config=types.GenerateContentConfig(
                 response_modalities=["IMAGE"],
                 image_config=types.ImageConfig(
-                    image_size="0.5K",
+                    image_size="1K",
                     aspect_ratio="16:9",
                 ),
             ),
